@@ -1,0 +1,24 @@
+{
+ "format": "survey-drafting/parcel",
+ "schema_version": 1,
+ "name": "Lot 7",
+ "units": "ft",
+ "segments": [
+  {
+   "from": "101",
+   "to": "102"
+  },
+  {
+   "from": "102",
+   "to": "103"
+  },
+  {
+   "from": "103",
+   "to": "104"
+  },
+  {
+   "from": "104",
+   "to": "101"
+  }
+ ]
+}

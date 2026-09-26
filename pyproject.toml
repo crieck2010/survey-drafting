@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "survey-drafting"
+version = "0.1.0"
+description = "Drafting and deliverables engine for the land-surveying suite: plats, plans, and maps from adjusted survey data, out to PDF"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9"
+authors = [{ name = "Charles Rieck" }]
+keywords = ["surveying", "plat", "drafting", "pdf", "cogo"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+dependencies = [
+    "survey-cogo @ git+https://github.com/crieck2010/survey-cogo@f59b04d8048d282cffe281723d53d521b720007d",
+]
+
+[project.scripts]
+draft = "drafting.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

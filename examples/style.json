@@ -1,0 +1,138 @@
+{
+  "format": "survey-drafting/style",
+  "schema_version": 1,
+  "_doc": "survey-drafting style sheet. layers: per-layer drawing style (color as [R,G,B] 0-255, width_pt, linetype solid|dashed|dotted|dashdot, symbol circle|square|triangle|cross|none). text: named text styles. Unknown layers fall back to a plain black style.",
+  "layers": {
+    "control": {
+      "color": [
+        200,
+        0,
+        0
+      ],
+      "width_pt": 1.0,
+      "linetype": "solid",
+      "symbol": "triangle",
+      "symbol_size_pt": 9.0,
+      "fill": false
+    },
+    "boundary": {
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "width_pt": 1.75,
+      "linetype": "solid",
+      "symbol": "none",
+      "symbol_size_pt": 6.0,
+      "fill": false
+    },
+    "linework": {
+      "color": [
+        60,
+        60,
+        60
+      ],
+      "width_pt": 0.75,
+      "linetype": "solid",
+      "symbol": "none",
+      "symbol_size_pt": 6.0,
+      "fill": false
+    },
+    "points": {
+      "color": [
+        0,
+        0,
+        180
+      ],
+      "width_pt": 0.75,
+      "linetype": "solid",
+      "symbol": "circle",
+      "symbol_size_pt": 5.0,
+      "fill": false
+    },
+    "annotations": {
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "width_pt": 0.5,
+      "linetype": "solid",
+      "symbol": "none",
+      "symbol_size_pt": 6.0,
+      "fill": false
+    },
+    "easements": {
+      "color": [
+        0,
+        120,
+        0
+      ],
+      "width_pt": 0.75,
+      "linetype": "dashed",
+      "symbol": "none",
+      "symbol_size_pt": 6.0,
+      "fill": false
+    },
+    "basemap": {
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "width_pt": 0.5,
+      "linetype": "solid",
+      "symbol": "none",
+      "symbol_size_pt": 6.0,
+      "fill": false
+    }
+  },
+  "text": {
+    "label": {
+      "font": "Helvetica",
+      "size_pt": 7.0,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    "title": {
+      "font": "Helvetica-Bold",
+      "size_pt": 14.0,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    "heading": {
+      "font": "Helvetica-Bold",
+      "size_pt": 10.0,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    "table": {
+      "font": "Helvetica",
+      "size_pt": 7.0,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    "note": {
+      "font": "Helvetica",
+      "size_pt": 7.5,
+      "color": [
+        40,
+        40,
+        40
+      ]
+    }
+  }
+}
