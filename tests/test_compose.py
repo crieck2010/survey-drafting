@@ -188,3 +188,47 @@ def test_cli_refuses_invalid_exit_code(tmp_path, capsys):
                "--out", str(tmp_path / "x.pdf")])
     assert rc == 3
     assert "Refusing to draft" in capsys.readouterr().err
+
+
+# --- v0.1.2 regression: elevation-only points don't break composition ---
+def test_compose_skips_elevation_only_points(tmp_path):
+    import json
+    from drafting import compose
+    from drafting.styles import DEFAULT_STYLE
+    sadj = {
+        "format": "survey-adjust-workflow/adjusted",
+        "schema_version": 1,
+        "source_job": {"path": "job.sfield.json", "sha256": "x"},
+        "weights": {"path": None, "sha256": None, "config_sha256": "y"},
+        "package_versions": {},
+        "paths_run": ["rtk", "levels"],
+        "points": [
+            {"name": "A", "easting": 100.0, "northing": 200.0,
+             "elevation": 10.0, "sigma_e": 0.01, "sigma_n": 0.01,
+             "sigma_u": 0.02, "source": "rtk-weighted-mean+level-net"},
+            {"name": "B", "easting": 130.0, "northing": 200.0,
+             "elevation": 10.1, "sigma_e": 0.01, "sigma_n": 0.01,
+             "sigma_u": 0.02, "source": "rtk-weighted-mean+level-net"},
+            {"name": "BASE1", "easting": None, "northing": None,
+             "elevation": 12.0, "sigma_e": None, "sigma_n": None,
+             "sigma_u": 0.0, "source": "level-net", "held": True},
+        ],
+        "validity": {"valid": True,
+                     "checks": [["c", True, "d"]]},
+        "report": "report.md",
+        "notes": [],
+    }
+    sp = tmp_path / "a.sadj.json"
+    sp.write_text(json.dumps(sadj))
+    parcel = {"format": "survey-drafting/parcel", "schema_version": 1,
+              "units": "ft", "boundary_order": ["A", "B"],
+              "segments": [{"from": "A", "to": "B", "kind": "line"},
+                           {"from": "B", "to": "A", "kind": "line"}]}
+    pp = tmp_path / "p.parcel.json"
+    pp.write_text(json.dumps(parcel))
+    (tmp_path / "report.md").write_text("# report\n")
+    out = tmp_path / "plat.pdf"
+    manifest = compose.compose_deliverable(str(sp), str(pp),
+                                           DEFAULT_STYLE, str(out),
+                                           options={"kind": "plat"})
+    assert out.exists() and manifest["validity"] is True

@@ -83,6 +83,8 @@ def _draw_entity(doc_pdf, c, ent: dict, st, vp: Viewport, style: Style) -> None:
             c.hatch_polygon(pts)
         c.polygon(pts, fill=False, stroke=True)
     elif t == "point":
+        if ent["at"][0] is None or ent["at"][1] is None:
+            return  # elevation-only station: nothing planimetric to draw
         x, y = vp.to_page(*ent["at"])
         symbol = ent.get("symbol") or st.symbol
         draw_symbol(c, x, y, symbol, st.symbol_size_pt, st)
@@ -92,6 +94,8 @@ def _draw_entity(doc_pdf, c, ent: dict, st, vp: Viewport, style: Style) -> None:
             c.text(x + 4, y + 4, str(ent["label"]),
                    font=ts.font, size=ts.size_pt)
     elif t == "text":
+        if ent["at"][0] is None or ent["at"][1] is None:
+            return
         x, y = vp.to_page(*ent["at"])
         ts = style.text_style(ent.get("style", "label"))
         c.set_fill(ts.color)
@@ -297,8 +301,9 @@ def _content_bbox(layers: Dict[str, Layer]):
                     xs.append(x)
                     ys.append(y)
             elif t in ("point", "text"):
-                xs.append(ent["at"][0])
-                ys.append(ent["at"][1])
+                if ent["at"][0] is not None and ent["at"][1] is not None:
+                    xs.append(ent["at"][0])
+                    ys.append(ent["at"][1])
             elif t == "raster":
                 xmin, ymin, xmax, ymax = ent["source"].extent_world()
                 xs += [xmin, xmax]
