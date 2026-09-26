@@ -139,7 +139,8 @@ def compose_deliverable(sadj_path: str, parcel_path: str, style: Style,
     ``options`` keys: kind ("plat"|"plan"|"map"), sheet (SHEETS key),
     scale ("fit" or standard), title, location, client, firm,
     project_no, drawn_by, checked_by, date, surveyor {name, license_no,
-    state}, basis_of_bearings, datum_note, basemap (image path),
+    state}, basis_of_bearings, datum_note, basemap (image path or
+    RasterSource, e.g. survey-basemap's GeoTIFFRasterSource),
     basemap_world (world file path), hide (list of layer names),
     sheet_no, sheet_count.
     """
@@ -165,9 +166,16 @@ def compose_deliverable(sadj_path: str, parcel_path: str, style: Style,
 
     # 3. Layers.
     basemap = None
-    if opts.get("basemap"):
-        basemap = WorldFileRaster(opts["basemap"],
-                                  opts.get("basemap_world"))
+    if opts.get("basemap") is not None:
+        _bm = opts["basemap"]
+        if isinstance(_bm, str):
+            basemap = WorldFileRaster(_bm, opts.get("basemap_world"))
+        elif hasattr(_bm, "extent_world") and hasattr(_bm, "image"):
+            basemap = _bm  # a RasterSource (e.g. survey-basemap GeoTIFF)
+        else:
+            raise ValueError(
+                "basemap option must be an image path or a RasterSource "
+                f"(extent_world/image), got {type(_bm).__name__}")
     layers = build_layers(parcel, points, style, basemap=basemap)
     for hidden in opts.get("hide") or []:
         if hidden in layers:

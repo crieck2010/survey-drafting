@@ -30,7 +30,7 @@ from .styles import DEFAULT_STYLE, Style, load_style, style_template
 from .layers import Layer, WorldFileRaster, build_layers
 from .compose import compose_deliverable
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "__version__",

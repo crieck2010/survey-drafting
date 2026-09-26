@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "survey-drafting"
-version = "0.1.0"
+version = "0.1.1"
 description = "Drafting and deliverables engine for the land-surveying suite: plats, plans, and maps from adjusted survey data, out to PDF"
 readme = "README.md"
 license = { text = "MIT" }
