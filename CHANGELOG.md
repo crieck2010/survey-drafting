@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-10-10
+
+### Added
+
+- `compose_deliverable` accepts an `extra_layers` option:
+  `{layer_name: [entity, ...]}` merged into the named layers after the
+  standard stack is built. This is the figures-to-plat path: the
+  SurveySuite desktop app feeds `survey-linework`'s
+  `figures_to_drafting_layers()` output straight in (typically onto the
+  `linework` layer). Unknown layer names raise `ValueError`, consistent
+  with the `hide` option. Fully backward compatible.
+
+## [0.1.2] - 2026-09-26
+
+### Fixed
+
+- Held base stations (elevation-only, no planimetric coordinates) no
+  longer crash composition in `_content_bbox`; they are skipped in draw
+  and extent computation.
+
 ## [0.1.1] - 2026-09-26
 
 ### Added

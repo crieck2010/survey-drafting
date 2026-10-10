@@ -146,7 +146,11 @@ def compose_deliverable(sadj_path: str, parcel_path: str, style: Style,
     state}, basis_of_bearings, datum_note, basemap (image path or
     RasterSource, e.g. survey-basemap's GeoTIFFRasterSource),
     basemap_world (world file path), hide (list of layer names),
-    sheet_no, sheet_count.
+    sheet_no, sheet_count, extra_layers ({layer_name: [entity, ...]} --
+    caller-supplied entities merged into the named layers after the
+    standard stack is built, e.g. survey-linework figures via
+    ``figures_to_drafting_layers()``; unknown layer names raise
+    ValueError, like ``hide``).
     """
     opts = dict(options or {})
     kind = opts.get("kind", "plat")
@@ -181,6 +185,12 @@ def compose_deliverable(sadj_path: str, parcel_path: str, style: Style,
                 "basemap option must be an image path or a RasterSource "
                 f"(extent_world/image), got {type(_bm).__name__}")
     layers = build_layers(parcel, points, style, basemap=basemap)
+    for lname, entities in (opts.get("extra_layers") or {}).items():
+        if lname not in layers:
+            raise ValueError(f"unknown layer {lname!r} in extra_layers; "
+                             f"known: {sorted(layers)}")
+        for ent in entities:
+            layers[lname].add(ent)
     for hidden in opts.get("hide") or []:
         if hidden in layers:
             layers[hidden].visible = False

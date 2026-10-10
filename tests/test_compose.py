@@ -232,3 +232,33 @@ def test_compose_skips_elevation_only_points(tmp_path):
                                            DEFAULT_STYLE, str(out),
                                            options={"kind": "plat"})
     assert out.exists() and manifest["validity"] is True
+
+
+def test_extra_layers_merged_onto_linework(tmp_path):
+    sadj = _sadj(tmp_path)
+    out = str(tmp_path / "plat_extra.pdf")
+    extra = {"linework": [
+        {"type": "line", "pts": [(500000.0, 4500000.0),
+                                 (500060.0, 4500060.0)]},
+        {"type": "text", "at": (500030.0, 4500030.0),
+         "text": "FIGURE-EC1", "style": "label"},
+    ]}
+    manifest = compose_deliverable(
+        sadj, _parcel(tmp_path), DEFAULT_STYLE, out,
+        {"kind": "plat", "sheet": "ANSI_C", "scale": "fit",
+         "extra_layers": extra})
+    data = (tmp_path / "plat_extra.pdf").read_bytes()
+    assert data.startswith(b"%PDF-1.4")
+    _parse_xref(data)
+    # the injected figure label made it into the page stream
+    assert b"FIGURE-EC1" in data
+    assert manifest["validity"] is True
+
+
+def test_extra_layers_unknown_layer_raises(tmp_path):
+    sadj = _sadj(tmp_path)
+    with pytest.raises(ValueError, match="unknown layer 'nope'"):
+        compose_deliverable(
+            sadj, _parcel(tmp_path), DEFAULT_STYLE,
+            str(tmp_path / "x.pdf"),
+            {"kind": "plat", "extra_layers": {"nope": []}})
