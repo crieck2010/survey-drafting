@@ -1,3 +1,7 @@
+> [!IMPORTANT]
+> **Consolidated into [SurveySuite](https://github.com/crieck2010/survey-suite)**  
+> This engine has been consolidated into the unified [SurveySuite monorepo](https://github.com/crieck2010/survey-suite). Active development, bug fixes, releases, and unified testing now live in `survey-suite`. This repository is preserved as an archive.
+
 # survey-drafting
 
 A pure-Python, dependency-free **drafting and deliverables engine** for
@@ -156,3 +160,4 @@ readers reject newer versions loudly. Additive fields don't bump.
 ## License
 
 MIT — see LICENSE.
+
